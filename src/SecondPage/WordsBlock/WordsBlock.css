@@ -5,3 +5,12 @@
     margin-top: 140px;
     margin-bottom: 70px;
 }
+
+@media screen and (max-width: 600px) {
+    .WordsBlock {
+        display: block;
+        margin-top: 50px;
+
+    }
+}
+

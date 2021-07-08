@@ -4,7 +4,42 @@
     justify-content: center;
     margin-bottom: 90px;
 
-    & button.accept {
-    margin-right: 15px;
+    & .accept {
+        margin-left: 15px;
+        color: #ffffff;
     }
+
+    & .exit {
+        color: darkgrey;
+    }
+    //& .MuiDialog-paper {
+    //        height: 80%;
+    //}
+
+}
+
+//.MuiPaper-root {
+//    color: #009624;
+
+     .MuiDialog-paper {
+        height: 65%;
+        width: 90%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+         & p{
+             font-size: 40px;
+             color: #009624;
+         }
+
+
+        & .MuiSvgIcon-root {
+            margin-bottom: 15px;
+            font-size: 7rem;
+            color: #009624;
+            width: 100%;
+            height: 30%;
+        }
+
 }

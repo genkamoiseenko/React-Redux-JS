@@ -20,6 +20,11 @@ export default function secondPageReducers (state = initialState, action) {
             return {...state, failedCounter: action.payload }
         case 'FAILED_AGAIN':
             return {...state,  failedCounter: action.payload }
+        case 'RESET_COUNTERS':
+            return {...state,
+                passedCounter: action.payload,
+                failedCounter: action.payload
+            }
         default:
             return state;
     }

@@ -3,34 +3,20 @@
     flex-direction: column;
     align-items: center;
 
-    &__title {
-        width: 100px;
-        height: 20px;
-        text-align: center;
-        margin-bottom: 15px;
-    }
-    
-    & input {
+    //&__title {
+    //    width: 100px;
+    //    height: 35px;
+    //    text-align: center;
+    //    //margin-bottom: 15px;
+    //}
+
+    & TextField {
+        outline: none;
         width: 125px;
         height: 22px;
         text-align: center;
         font-size: 1.1em;
     }
-    & .input--disabled {
-        border-color: mediumblue;
-    }
-
-    & .input--error {
-        border-color: red;
-        background-color: salmon;
-    }
-
-    & .input--accept {
-        border-color:  lightgreen;
-        background-color: skyblue;
-    }
-   
-    
     
     &__message {
         margin-top: 15px;
@@ -39,4 +25,15 @@
     }
 }
 
+@media screen and (max-width: 600px) {
+    .WordField {
+        &__title {
+            display: none;
+        }
+        &__message {
+            margin-bottom: 15px;
+            margin-top: 5px;
+        }
+    }
+}
 

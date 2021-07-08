@@ -17,12 +17,14 @@ class SecondPage extends Component {
    state = {
      inputValues: [],
      inputWord: false,
+     open: false,
+     vertical: 'top',
+     horizontal: 'center',
   }
 
   componentWillMount() {
     const {generateNewWords} = this.props
-    const {language}=this.props.language;
-
+    const {language}=this.props.match.params
     generateNewWords(language)
   }
 
@@ -34,7 +36,7 @@ class SecondPage extends Component {
 
   nextWordInit = () => {
     const {generateNewWords, setIsValidWords} = this.props
-    const {language}=this.props.language;
+    const {language}=this.props.match.params
 
     this.setState({
       inputValues: [],
@@ -46,11 +48,19 @@ class SecondPage extends Component {
   }
 
   compareInputsValuesWithRandomArray = () => {
+
     const { checkUserAnswer,generatedArray} = this.props;
     const {inputValues} =this.state
+    // alert(2);
 
     const actionData = checkUserAnswer (inputValues, generatedArray);
+    // if(checkUserAnswer === true) {
+    //   alert('молодец!')
+    // } else {
+    //   alert('ну ты и тупой!')
+    // }
     this.counter(actionData.payload)
+    // alert(2);
   }
 
 
@@ -74,19 +84,44 @@ class SecondPage extends Component {
       }
     }
   }
-  
+
+  // handleClose = () => {
+  //   this.setState({
+  //     ...this.state,
+  //     open: false
+  //   });
+  // };
+
   render() {
+    // const{vertical, horizontal, open}=this.state
 
     return (
       <div className = "SecondPage">
+
+        {/*<ExitToAppOutlinedIcon fontSize="large"></ExitToAppOutlinedIcon>*/}
         <WordsBlock
           setWordsOnChange={this.setWordsOnChange}
           checkAnswer={this.compareInputsValuesWithRandomArray}
         />
-        <ButtonBlock 
+        <ButtonBlock
           checkAnswer={this.compareInputsValuesWithRandomArray}
-        /> 
+        />
         <CheckBlock />
+        {/*{checkUserAnswer && <Snackbar*/}
+        {/*    anchorOrigin={{ vertical, horizontal }}*/}
+        {/*    open={open}*/}
+        {/*    onClose={this.handleClose}*/}
+        {/*    message="Great!"*/}
+        {/*    key={vertical + horizontal}*/}
+        {/*/>}*/}
+
+        {/*{!checkUserAnswer && <Snackbar*/}
+        {/*    anchorOrigin={{ vertical, horizontal }}*/}
+        {/*    open={open}*/}
+        {/*    onClose={this.handleClose}*/}
+        {/*    message="Great!"*/}
+        {/*    key={vertical + horizontal}*/}
+        {/*/>}*/}
     </div>
     )
   }

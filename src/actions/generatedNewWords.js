@@ -1,4 +1,4 @@
-export const  generateNewWords = () => {
+export const  generateNewWords = (language) => {
 
     const generatedArray = (language) => {
         const resultArray = (() => {
@@ -34,12 +34,13 @@ export const  generateNewWords = () => {
         })();
 
         const randomOfResultArray = resultArray[Math.floor(Math.random() * resultArray.length)];
+
         return randomOfResultArray;
     }
 
     return {
         type: 'GENERATE_ARRAY_NEW_WORDS',
-        payload: generatedArray('rus')
+        payload: generatedArray(language)
     }
 }
 

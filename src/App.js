@@ -1,8 +1,14 @@
 import { Component } from "react";
+import { connect } from "react-redux";
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Link
+} from "react-router-dom";
 import Navigation from './Navigation/Navigation';
 import FirstPage from './FirstPage/FirstPage';
 import SecondPage from './SecondPage/SecondPage';
-import { connect } from "react-redux";
 
 import './App.scss';
 
@@ -14,20 +20,21 @@ class App extends Component {
     return (
 
       <div className="App">
-        <Navigation
-          language={language}
-        />
-        <div className="AppWrapper">
-          <div className="AppWrapper__content">
-            {!language && <FirstPage
-              language={language}
-            />}
-            
-            {language && <SecondPage
-              language={language}
-            />}
+          <div className="AppWrapper">
+              <div className="AppWrapper__content">
+                  {/*<Navigation*/}
+                  {/*    language={language}*/}
+                  {/*/>*/}
+          <Router>
+              <Switch>
+
+                  <Route path="/:language" component={SecondPage}/>
+                  <Route path="" component={FirstPage}/>
+              </Switch>
+
+          </Router>
+              </div>
           </div>
-        </div>
       </div>
     );
   }

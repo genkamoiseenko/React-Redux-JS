@@ -26,9 +26,9 @@ class Navigation extends Component {
   };
 
 
-  notification = () => {
-    alert("select a language first")
-  } 
+  // notification = () => {
+  //   alert("select a language first")
+  // }
 
   render() {
 
