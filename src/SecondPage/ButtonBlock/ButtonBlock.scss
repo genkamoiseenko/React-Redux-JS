@@ -10,36 +10,52 @@
     }
 
     & .exit {
-        color: darkgrey;
+        color: #000000;
     }
-    //& .MuiDialog-paper {
-    //        height: 80%;
-    //}
+
+  @keyframes popup_animation_frames--fadeIn {
+    from {top:-100px;opacity: 0;}
+    to {top:0px;opacity:1;}
+  }
+  @keyframes popup_animation_frames--fadeOut {
+    from {top:0px;opacity:1;}
+    to {top:-100px;opacity: 0;}
+  }
+  &__Dialog {
+    &:not(.ButtonBlock__Dialog--fadeOut) {
+      animation-name: popup_animation_frames--fadeIn;
+      animation-duration: 0.5s;
+    }
+
+    &--fadeOut {
+      animation-name: popup_animation_frames--fadeOut;
+      animation-duration: 1s;
+    }
+  }
 
 }
 
-//.MuiPaper-root {
-//    color: #009624;
+.MuiDialog-paper {
+  height: 65%;
+  width: 90%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-     .MuiDialog-paper {
-        height: 65%;
-        width: 90%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+  & p{
+    font-size: 40px;
+    color: #009624;
+  }
 
-         & p{
-             font-size: 40px;
-             color: #009624;
-         }
+  & .MuiSvgIcon-root {
+    margin-bottom: 15px;
+    font-size: 7rem;
+    color: #009624;
+    width: 100%;
+    height: 30%;
+  }
 
 
-        & .MuiSvgIcon-root {
-            margin-bottom: 15px;
-            font-size: 7rem;
-            color: #009624;
-            width: 100%;
-            height: 30%;
-        }
+
 
 }

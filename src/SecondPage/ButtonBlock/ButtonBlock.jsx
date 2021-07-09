@@ -1,22 +1,22 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {connect} from "react-redux";
-import { withRouter } from "react-router-dom";
+import {withRouter} from "react-router-dom";
+import classnames from "classnames";
 import Button from '@material-ui/core/Button';
 import {selectLanguage} from "../../actions/languageSelection";
 import {resetCounters} from "../../actions/resetCounters";
 import {setIsValidWords} from "../../actions/resetIsValidWords";
 import Dialog from '@material-ui/core/Dialog';
 import ThumbUpAltOutlinedIcon from '@material-ui/icons/ThumbUpAltOutlined';
-// import DialogTitle from '@material-ui/core/DialogTitle';
-// import logo from './logo.png'
 
 import './ButtonBlock.scss';
 
 class ButtonBlock extends Component {
 
     state = {
-        open: false,
-        messageIsOpen: false,
+        modalIsOpen: false,
+        modalWillBeClosed: false,
+        clickedFirstTime: true,
     }
 
     handleExitButton = () => {
@@ -25,78 +25,79 @@ class ButtonBlock extends Component {
         this.props.setIsValidWords();
         this.props.history.push('/');
     }
-    // //
+
     checkAnswerWithMassage = () => {
-        const {checkAnswer} = this.props
-        const {isValidWords} = this.props
-        const {messageIsOpen} = this.state
-        checkAnswer();
 
-        if(isValidWords) {
+        const {checkAnswer} = this.props;
+        const {clickedFirstTime} = this.state;
+
+        checkAnswer((value) => {
+            if(clickedFirstTime) {
+                this.setState({
+                    modalIsOpen: true,
+                    modalWillBeClosed: false,
+                });
+            }
+
+            setTimeout(() => {
+                this.handleCloseMessage();
+            }, 1000)
+        });
+
+        this.setState({
+            clickedFirstTime: false
+        })
+
+    };
+
+    handleCloseMessage = () => {
+        this.setState({
+            modalWillBeClosed: true,
+
+        })
+        setTimeout(() => {
             this.setState({
-                open: true,
-                messageIsOpen: true,
+                modalIsOpen: false,
+                modalWillBeClosed: false,
+                clickedFirstTime: true
+
             })
-        } else {
-            if(messageIsOpen)
-            this.setState({
-                messageIsOpen: false,
-            })
-        }
-        setTimeout (() => {
-                this.handleCloseMessage()
-            }, 1500 )
-    }
-        //
+        }, 700)
+    };
 
-        //
-        handleCloseMessage = () => {
-            this.setState({
-                open: false,
-                messageIsOpen: false,
-            })
+    render() {
+        console.log(this.state);
+        const {modalWillBeClosed, modalIsOpen, clickedFirstTime} = this.state
 
-
-        };
-
-        render()
-        {
-            const {isValidWords} = this.props
-            const {open, messageIsOpen} = this.state
-
-            return (
-                <div className="ButtonBlock">
-                    <Button className="exit" variant="contained" size="medium" onClick={this.handleExitButton}>
-                        EXIT
-                    </Button>
-                    <Button className="accept" variant="contained" size="medium" color="primary"
-                            onClick={this.checkAnswerWithMassage}>
-                        OK
-                    </Button>
-                    {isValidWords && messageIsOpen  && <Dialog
-                        open={open}
+        return (
+            <div className="ButtonBlock">
+                <Button className="exit" variant="contained" size="medium" onClick={this.handleExitButton}>
+                    EXIT
+                </Button>
+                <Button className="accept" variant="contained" size="medium" color="primary"
+                        onClick={this.checkAnswerWithMassage}>
+                    OK
+                </Button>
+                {modalIsOpen && (
+                    <Dialog
+                        open={true}
                         onClose={this.handleCloseMessage}
                         aria-labelledby="alert-dialog-title"
                         aria-describedby="alert-dialog-description"
+                        className={classnames('ButtonBlock__Dialog', {
+                            'ButtonBlock__Dialog--fadeOut': modalWillBeClosed
+                        })}
                     >
-                        <ThumbUpAltOutlinedIcon />
+                        <ThumbUpAltOutlinedIcon/>
                         <p>Great!</p>
-                    </Dialog>}
-
-
-
-                </div>
-            )
-        }
-    }
-
-
-function mapStateToProps(state) {
-
-    return {
-        isValidWords: state.secondPageReducers.isValidWords,
+                    </Dialog>
+                )}
+            </div>
+        )
     }
 }
+
+
 
 const mapDispatchToProps = {
     selectLanguage,
@@ -104,5 +105,5 @@ const mapDispatchToProps = {
     setIsValidWords,
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ButtonBlock))
+export default withRouter(connect(null, mapDispatchToProps)(ButtonBlock))
 
