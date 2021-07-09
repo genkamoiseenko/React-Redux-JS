@@ -67,7 +67,7 @@ class ButtonBlock extends Component {
 
     render() {
         console.log(this.state);
-        const {modalWillBeClosed, modalIsOpen, clickedFirstTime} = this.state
+        const {modalWillBeClosed, modalIsOpen} = this.state
 
         return (
             <div className="ButtonBlock">

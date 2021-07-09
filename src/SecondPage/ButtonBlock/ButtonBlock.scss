@@ -55,7 +55,15 @@
     height: 30%;
   }
 
-
-
-
 }
+
+@media screen and (max-width: 600px) {
+    .ButtonBlock {
+      margin-bottom: 50px;
+
+      & .exit {
+        margin-right: 40px;
+      }
+    }
+}
+

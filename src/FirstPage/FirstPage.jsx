@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { connect} from "react-redux";
-import Button from '@material-ui/core/Button';
 import { selectLanguage } from '../actions/languageSelection';
 
 import './FirstPage.scss'
@@ -13,17 +12,13 @@ class FirstPage extends Component {
     const onChangeLanguage = (language) => () => {
         selectLanguage(language);
         this.props.history.push(`/${language}`);
-
-        // 'text ' + var + ' text';
-        //
-        // `text ${var} text`
     }
     return (
       <div className = "FirstPage">
           <div className = "FirstPage__title">Please, choose a translation language:</div>
           <div className = "FirstPage__button">
-            <Button className="button--ukr" variant="outlined" size="medium" color="primary" onClick={onChangeLanguage("ukr")}>UKR</Button>
-            <Button variant="outlined" size="medium" color="primary" onClick={onChangeLanguage("rus")}>RUS</Button>
+              <img src="image/ua.png" className="button--ukr" onClick={onChangeLanguage("ukr")} />
+              <img src="image/ru.png" onClick={onChangeLanguage("ru")} />
           </div>
     </div>
     )

@@ -19,7 +19,7 @@ export const  generateNewWords = (language) => {
                     resultArray.push(countArray);
                     x += 4;
                 }
-            } else if (language === "rus") {
+            } else if (language === "ru") {
                 for (let i = 3; i <= array.length; i = i + 4) {
                     array.splice(i, 1);
                 }
