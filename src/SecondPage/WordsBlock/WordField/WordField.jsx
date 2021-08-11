@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types';
-import {connect} from "react-redux";
 import TextField from '@material-ui/core/TextField';
 
 import './WordField.scss'
@@ -13,7 +12,7 @@ export default class WordField extends Component {
 
     onKeyDown = (e) => {
         e.preventDefault();
-        this.props.checkAnswer(e);
+        this.props.handleCheckAnswer(e);
     }
 
     render() {
@@ -43,7 +42,7 @@ WordField.propTypes = {
     showHint: PropTypes.bool,
     onChange: PropTypes.func,
     inputWord: PropTypes.string,
-    checkAnswer: PropTypes.func,
+    handleCheckAnswer: PropTypes.func,
 }
 
 

@@ -6,8 +6,11 @@ import Button from '@material-ui/core/Button';
 import {selectLanguage} from "../../actions/languageSelection";
 import {resetCounters} from "../../actions/resetCounters";
 import {setIsValidWords} from "../../actions/resetIsValidWords";
+import CheckBlock from "../CheckBlock/CheckBlock";
+import {generateNewWordsPackAction} from "../../actions/generatedNewWords";
 import Dialog from '@material-ui/core/Dialog';
 import ThumbUpAltOutlinedIcon from '@material-ui/icons/ThumbUpAltOutlined';
+
 
 import './ButtonBlock.scss';
 
@@ -24,6 +27,18 @@ class ButtonBlock extends Component {
         this.props.resetCounters();
         this.props.setIsValidWords();
         this.props.history.push('/');
+        this.props.resetValueOfWordsEnd();
+    }
+
+    generatedNextPackOfWords = () => {
+        const {generateNewWordsPackAction} = this.props
+        const {language}=this.props.match.params
+
+        this.props.resetCounters()
+        this.props.resetValueOfWordsEnd()
+        this.props.resetInputValuesAndWord()
+        this.props.setIsValidWords();
+        generateNewWordsPackAction(language);
     }
 
     checkAnswerWithMassage = () => {
@@ -41,6 +56,7 @@ class ButtonBlock extends Component {
 
             setTimeout(() => {
                 this.handleCloseMessage();
+
             }, 1000)
         });
 
@@ -62,12 +78,14 @@ class ButtonBlock extends Component {
                 clickedFirstTime: true
 
             })
+
         }, 700)
     };
 
     render() {
-        console.log(this.state);
+        // console.log(this.state);
         const {modalWillBeClosed, modalIsOpen} = this.state
+        const {wordsEnd}=this.props
 
         return (
             <div className="ButtonBlock">
@@ -78,7 +96,7 @@ class ButtonBlock extends Component {
                         onClick={this.checkAnswerWithMassage}>
                     OK
                 </Button>
-                {modalIsOpen && (
+                {modalIsOpen && !wordsEnd && (
                     <Dialog
                         open={true}
                         onClose={this.handleCloseMessage}
@@ -92,18 +110,48 @@ class ButtonBlock extends Component {
                         <p>Great!</p>
                     </Dialog>
                 )}
+                {wordsEnd &&(
+                    <Dialog
+                    className={classnames('ButtonBlock__Dialog', {
+                        'ButtonBlock__Dialog--endOfWordsBlock': modalWillBeClosed})}
+                    open={true}
+                    // onClose={this.handleCloseMessage}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+
+                >
+                    <h3 >Your result:</h3>
+                    <CheckBlock />
+                    <h3
+                        onClick={this.handleExitButton}>
+                        Enough for today?
+                    </h3>
+                     <h3
+                      className='ButtonBlock__score'
+                      onClick={this.generatedNextPackOfWords}>
+                         I want to try again
+                     </h3>
+                    </Dialog>
+                )}
+
             </div>
         )
     }
 }
 
+function mapStateToProps(state) {
 
+    return {
+        language: state.language
+    }
+}
 
 const mapDispatchToProps = {
     selectLanguage,
     resetCounters,
     setIsValidWords,
+    generateNewWordsPackAction,
 }
 
-export default withRouter(connect(null, mapDispatchToProps)(ButtonBlock))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ButtonBlock))
 

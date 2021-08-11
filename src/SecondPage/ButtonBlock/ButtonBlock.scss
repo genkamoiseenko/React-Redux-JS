@@ -13,6 +13,8 @@
         color: #000000;
     }
 
+
+
   @keyframes popup_animation_frames--fadeIn {
     from {top:-100px;opacity: 0;}
     to {top:0px;opacity:1;}
@@ -31,6 +33,13 @@
       animation-name: popup_animation_frames--fadeOut;
       animation-duration: 1s;
     }
+    &--eendOfWordsBlock {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+
+    }
   }
 
 }
@@ -45,6 +54,10 @@
   & p{
     font-size: 40px;
     color: #009624;
+  }
+  & h3 {
+    font-size: 1.5rem;
+    color: #1E90FF;
   }
 
   & .MuiSvgIcon-root {

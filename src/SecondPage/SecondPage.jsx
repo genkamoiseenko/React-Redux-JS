@@ -1,28 +1,53 @@
 import React, { Component } from 'react'
-import CheckBlock from './CheckBlock/CheckBlock';
+// import CheckBlock from './CheckBlock/CheckBlock';
 import ButtonBlock from './ButtonBlock/ButtonBlock';
 import WordsBlock from './WordsBlock/WordsBlock';
 import {connect} from "react-redux";
 import {setPassedCounter} from "../actions/setPassedCounter";
 import {setFailedCounter} from "../actions/setFailedCounter";
 import {counterAfterCheck} from "../actions/failedCounterAfterCheck";
-import {generateNewWords} from "../actions/generatedNewWords";
+import {generateNewWordsPackAction, getNewWordFromPackAction} from "../actions/generatedNewWords";
 import {checkUserAnswer} from "../actions/checkUserAnswer";
 import {setIsValidWords} from "../actions/resetIsValidWords";
+import {zeroPassedCounterAfterCheckAllPack} from "../actions/zeroPassedCounterAfterCheckAllPack";
+import {zeroFailedCounterAfterCheckAllPack} from "../actions/zeroFailedCounterAfterCheckAllPack";
 
 import './SecondPage.scss';
+import {keys} from "@material-ui/core/styles/createBreakpoints";
 
 class SecondPage extends Component {
   
    state = {
      inputValues: [],
      inputWord: false,
+     // wordsEnd: false,
+     // failedArrays: [],
   }
 
   componentWillMount() {
-    const {generateNewWords} = this.props
+    const {generateNewWordsPackAction, generatedArray} = this.props
     const {language}=this.props.match.params
-    generateNewWords(language)
+    // generateNewWords(language)
+    generateNewWordsPackAction(language);
+    // var simpleArray = generatedArray.join(',')
+    // localStorage.setItem('language', language )
+    // localStorage.setItem('generatedArray',simpleArray )
+    // localStorage.removeItem('generatedArray')
+    //   localStorage.clear()
+
+
+  }
+
+  resetValueOfWordsEnd =(wordsEnd) => {
+     this.setState({
+       wordsEnd: false
+     })
+  }
+  resetInputValuesAndWord = (inputValues, inputWord) => {
+    this.setState({
+        inputValues: [],
+        inputWord: false,
+      })
   }
 
   setWordsOnChange = (inputValues) => {
@@ -32,24 +57,64 @@ class SecondPage extends Component {
   }
 
   nextWordInit = () => {
-    const {generateNewWords, setIsValidWords} = this.props
-    const {language}=this.props.match.params
 
-    this.setState({
-      inputValues: [],
-      inputWord: false,
-    })
-    setIsValidWords()
-    generateNewWords(language)
+    const {
+      setIsValidWords,
+      generatedArrayPack,
+      getNewWordFromPackAction,
+      // generateNewWordsPackAction,
+      // language,
+    } = this.props
+    // const {wordsEnd, failedArrays} = this.state
+    // console.log(generatedArrayPack.length)
+
+
+    if (generatedArrayPack.length === 0) {
+      // generateNewWordsPackAction(language)
+      // if (failedArrays !== []) {
+      //   localStorage.setItem('failedWords', JSON.stringify(failedArrays))
+      // }
+      this.setState({
+        wordsEnd: true,
+      })
+    } else {
+      this.resetInputValuesAndWord()
+      setIsValidWords()
+      getNewWordFromPackAction(generatedArrayPack)
+    }
+
+    // this.setState({
+    //   inputValues: [],
+    //   inputWord: false,
+    // })
+    // setIsValidWords()
 
   }
+
+
+    // generateNewWordsPackAction(language)
+      // generateNewWords(language)
+
+    // if (wordsCount === 0) {
+    //   generateNewWords(language);
+    //   const generatedNextWord = generatedArray[Math.floor(Math.random() * generatedArray.length)]
+    //   generatedArray.splice(generatedArray.indexOf(generatedNextWord), 1)
+    //   wordsCount++
+    // } else if (wordsCount === 5) {
+    // alert("усьо")
+    // } else {
+    //   const generatedNextWord = generatedArray[Math.floor(Math.random() * generatedArray.length)]
+    //   generatedArray.splice(generatedArray.indexOf(generatedNextWord), 1)
+    //   wordsCount++
+    // }
 
   compareInputsValuesWithRandomArray = (callback) => {
 
     const { checkUserAnswer,generatedArray} = this.props;
-    const {inputValues} =this.state
+    const {inputValues} =this.state;
 
     const actionData = checkUserAnswer (inputValues, generatedArray);
+    // console.log(generatedArray)
 
     if(actionData.payload) {
       callback && callback(actionData.payload);
@@ -61,12 +126,25 @@ class SecondPage extends Component {
 
   counter = (isValidWords) => {
 
-    const {setPassedCounter, setFailedCounter, counterAfterCheck, passedCounter, failedCounter} = this.props;
+    const {
+      setPassedCounter,
+      setFailedCounter,
+      counterAfterCheck,
+      passedCounter,
+      failedCounter,
+      zeroPassedCounterAfterCheckAllPack,
+      zeroFailedCounterAfterCheckAllPack,
+      generatedArrayPack,
+      // generatedArray,
+
+    } = this.props;
     const {inputWord} = this.state;
 
-    if(isValidWords) {
+    // console.log(inputWord, isValidWords)
 
-      if(inputWord === false) {
+    if (isValidWords) {
+
+      if (inputWord === false) {
         setPassedCounter(passedCounter)
       }
       this.nextWordInit();
@@ -75,17 +153,64 @@ class SecondPage extends Component {
         counterAfterCheck(failedCounter)
       } else {
         setFailedCounter(failedCounter)
+        // failedArrays.push(generatedArray)
+        // this.deleteCorrectWordFromLocalStorage()
+
+        // const previousErrors = localStorage.getItem('failedWords')
+        // const previousErrorsArray = JSON.parse(previousErrors)
+        // if (inputWord === previousErrorsArray[0]) {
+        //   previousErrorsArray.splice(0,1)
+        //   for (let i = 0; i < previousErrorsArray.length; i++) {
+        //     failedArrays.push(previousErrorsArray[i])
+        //   }
+        //   localStorage.clear()
+        // }
+        // localStorage.setItem(failedCounter, generatedArray)
+        // failedArrays.push((localStorage.getItem(failedCounter)).split(','))
+
         this.setState({
           inputWord: true
         })
       }
     }
-    console.log(isValidWords)
+
+
+    // for (let i = 0; i <= failedCounter; i++) {
+    //   failedArrays.push((localStorage.getItem(i.toString())).split(','))
+    // }
+    // console.log(failedArrays)
+
+    if (generatedArrayPack.length === 0) {
+      if (passedCounter === 0) {
+        zeroPassedCounterAfterCheckAllPack()
+      } else if(failedCounter === 0) {
+        zeroFailedCounterAfterCheckAllPack()
+      }
+    }
+
+    // console.log(isValidWords)
   }
+
+//   deleteCorrectWordFromLocalStorage = () => {
+//     const {inputWord, failedArrays} = this.state;
+//     const previousErrors = localStorage.getItem('failedWords');
+//     const previousErrorsArray = JSON.parse(previousErrors);
+//
+//     if (inputWord === previousErrorsArray[0]) {
+//       previousErrorsArray.splice(0,1)
+//       if(previousErrorsArray.length !== 0) {
+//         for (let i = 0; i < previousErrorsArray.length; i++) {
+//           failedArrays.push(previousErrorsArray[i])
+//         }
+//       }
+//       localStorage.clear()
+//     }
+// }
 
 
   render() {
-console.log(this.props.isValidWords)
+// console.log(this.props.isValidWords)
+    const {wordsEnd} = this.state
     return (
       <div className = "SecondPage">
         <WordsBlock
@@ -94,8 +219,11 @@ console.log(this.props.isValidWords)
         />
         <ButtonBlock
           checkAnswer={this.compareInputsValuesWithRandomArray}
+          resetValueOfWordsEnd={this.resetValueOfWordsEnd}
+          resetInputValuesAndWord={this.resetInputValuesAndWord}
+          wordsEnd={wordsEnd}
         />
-        <CheckBlock />
+        {/*<CheckBlock />*/}
     </div>
     )
   }
@@ -109,6 +237,8 @@ function mapStateToProps(state) {
     isValidWords: state.secondPageReducers.isValidWords,
     passedCounter: state.secondPageReducers.passedCounter,
     failedCounter: state.secondPageReducers.failedCounter,
+    generatedArrayPack: state.secondPageReducers.generatedArrayPack,
+
   }
 }
 
@@ -116,11 +246,24 @@ const mapDispatchToProps = {
   setPassedCounter,
   setFailedCounter,
   counterAfterCheck,
-  generateNewWords,
+  generateNewWordsPackAction,
+  getNewWordFromPackAction,
   checkUserAnswer,
   setIsValidWords,
+  zeroPassedCounterAfterCheckAllPack,
+  zeroFailedCounterAfterCheckAllPack,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps) (SecondPage);
 
 
+
+// console.log(failedCounter)
+// localStorage.removeItem('false' )
+// for (let i = 0; i <=failedCounter; i++) {
+//   localStorage.setItem(i.toString(), generatedArray )
+//
+// }
+// falseArray.push(generatedArray)
+// console.log(falseArray)
+// localStorage.setItem('false', falseArray )

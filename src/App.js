@@ -6,7 +6,7 @@ import {
     Route,
     Link
 } from "react-router-dom";
-import Navigation from './Navigation/Navigation';
+// import Navigation from './Navigation/Navigation';
 import FirstPage from './FirstPage/FirstPage';
 import SecondPage from './SecondPage/SecondPage';
 

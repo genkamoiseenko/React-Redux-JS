@@ -25,6 +25,7 @@ class WordsBlock extends Component {
 
     setDisabledFieldValue =() => {
         const { generatedArray } = this.props;
+        console.log(generatedArray)
         const { filledWords, disabledIndex } = this.state;
 
         this.setState({
@@ -52,6 +53,8 @@ class WordsBlock extends Component {
 
 
     componentWillReceiveProps(nextProps) {
+        console.log('nextProps.generatedArray');
+        console.log(nextProps.generatedArray);
         if(nextProps.generatedArray.toString() !== this.props.generatedArray.toString()) {
 
             const disabledIndex = Math.floor(Math.random()*4);
@@ -68,8 +71,7 @@ class WordsBlock extends Component {
         }
     }
 
-    handleCheckAnser = (event) => {
-        // const { filledWords, disabledIndex }=this.state;
+    handleCheckAnswer = (event) => {
         const { checkAnswer } = this.props;
         const nodes = Array.prototype.slice.call( document.querySelectorAll('.WordField') );
         let currentInputIndex = nodes.indexOf( event.target ) + 1;
@@ -91,10 +93,13 @@ class WordsBlock extends Component {
                 ++currentInputIndex;
                 setFocus({callback});
             }
+            // console.log('де фокус?')
         }
         setFocus({callback: () => {
                 checkAnswer();
+                // console.log('де фокус?')
             }})
+        // console.log('де фокус?')
     }
 
     render() {
@@ -108,9 +113,9 @@ class WordsBlock extends Component {
                     inputWord={filledWords[0].toLowerCase()}
                     word={generatedArray[0]}
                     disabled={disabledIndex === 0}
-                    showHint={!isValidWords && (filledWords[0] !== generatedArray[0])}
+                    showHint={!isValidWords && (filledWords[0].trim() !== generatedArray[0])}
                     onChange={this.handleOnChange(0)}
-                    checkAnswer={this.handleCheckAnser}
+                    handleCheckAnswer={this.handleCheckAnswer}
 
                 />
                 <WordField
@@ -118,9 +123,9 @@ class WordsBlock extends Component {
                     word={generatedArray[1]}
                     inputWord={filledWords[1].toLowerCase()}
                     disabled={disabledIndex === 1}
-                    showHint={!isValidWords && (filledWords[1] !== generatedArray[1])}
+                    showHint={!isValidWords && (filledWords[1].trim() !== generatedArray[1])}
                     onChange={this.handleOnChange(1)}
-                    checkAnswer={this.handleCheckAnser}
+                    handleCheckAnswer={this.handleCheckAnswer}
 
                 />
                 <WordField
@@ -128,9 +133,9 @@ class WordsBlock extends Component {
                     word={generatedArray[2]}
                     inputWord={filledWords[2].toLowerCase()}
                     disabled={disabledIndex === 2}
-                    showHint={!isValidWords && (filledWords[2] !== generatedArray[2])}
+                    showHint={!isValidWords && (filledWords[2].trim() !== generatedArray[2])}
                     onChange={this.handleOnChange(2)}
-                    checkAnswer={this.handleCheckAnser}
+                    handleCheckAnswer={this.handleCheckAnswer}
 
                 />
                 <WordField
@@ -138,9 +143,9 @@ class WordsBlock extends Component {
                     word={generatedArray[3]}
                     inputWord={filledWords[3].toLowerCase()}
                     disabled={disabledIndex === 3}
-                    showHint={!isValidWords && (filledWords[3] !== generatedArray[3])}
+                    showHint={!isValidWords && (filledWords[3].trim() !== generatedArray[3])}
                     onChange={this.handleOnChange(3)}
-                    checkAnswer={this.handleCheckAnser}
+                    handleCheckAnswer={this.handleCheckAnswer}
 
                 />
             </div>

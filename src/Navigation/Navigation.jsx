@@ -2,8 +2,10 @@ import React, { Component } from 'react'
 import Snackbar from '@material-ui/core/Snackbar';
 import { selectLanguage } from '../actions/languageSelection';
 import {connect} from "react-redux";
+import CheckBlock from "../FirstPage/CheckBlock/CheckBlock";
+import HomeIcon from '@material-ui/icons/Home';
 
-import './Navigation.scss'
+import './Navigation.scss';
 
 class Navigation extends Component {
   state = {
@@ -25,7 +27,6 @@ class Navigation extends Component {
     });
   };
 
-
   // notification = () => {
   //   alert("select a language first")
   // }
@@ -39,24 +40,43 @@ class Navigation extends Component {
     return (
 
       <div className="Navigation">
-        <button onClick={() => selectLanguage(null)}>HOME</button>
-        <button onClick={this.handleClick({ vertical: 'bottom', horizontal: 'left' })}>TEST</button>
-        {!language && <Snackbar
-          anchorOrigin={{ vertical, horizontal }}
-          open={open}
-          onClose={this.handleClose}
-          message="Select a language first"
-          key={vertical + horizontal}
-        />}
+        {/*<button*/}
+        {/*    className="Navigation__button"*/}
+        {/*    onClick={() => alert("Меню працює")}>*/}
+          {/*<MenuIcon*/}
+          {/*    className="Navigation__menuIcon"*/}
+          {/*/>*/}
+        {/*  <HomeIcon*/}
+        {/*      className="Navigation__homeIcon"*/}
+        {/*  />*/}
+        {/*</button>*/}
+        {/*<MenuIcon*/}
+        {/*className="Navigation__menuIcon"*/}
+        {/*/>*/}
+        {/*<div className="Navigation__buttons">*/}
+        {/*<button onClick={() => selectLanguage(null)}>HOME</button>*/}
+        {/*<button onClick={this.handleClick({ vertical: 'bottom', horizontal: 'left' })}>TEST</button>*/}
+        {/*{!language && <Snackbar*/}
+        {/*  anchorOrigin={{ vertical, horizontal }}*/}
+        {/*  open={open}*/}
+        {/*  onClose={this.handleClose}*/}
+        {/*  message="Select a language first"*/}
+        {/*  key={vertical + horizontal}*/}
+        {/*/>}*/}
 
-        {language && <Snackbar
-          anchorOrigin={{ vertical, horizontal }}
-          open={open}
-          onClose={this.handleClose}
-          message="You are already taking the test"
-          key={vertical + horizontal}
-        />}
+        {/*{language && <Snackbar*/}
+        {/*  anchorOrigin={{ vertical, horizontal }}*/}
+        {/*  open={open}*/}
+        {/*  onClose={this.handleClose}*/}
+        {/*  message="You are already taking the test"*/}
+        {/*  key={vertical + horizontal}*/}
+        {/*/>}*/}
+        {/*</div>*/}
+        <div className="Navigation__score">
+        {language && <CheckBlock />}
+        </div>
       </div>
+
     )
   }
 }
@@ -73,3 +93,5 @@ const mapDispatchToProps = {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Navigation)
+
+
