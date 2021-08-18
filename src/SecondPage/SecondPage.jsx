@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+// nmp i lodash
+// import _ from 'lodash'
 // import CheckBlock from './CheckBlock/CheckBlock';
 import ButtonBlock from './ButtonBlock/ButtonBlock';
 import WordsBlock from './WordsBlock/WordsBlock';
@@ -20,7 +22,7 @@ class SecondPage extends Component {
    state = {
      inputValues: [],
      inputWord: false,
-     // wordsEnd: false,
+     wordsEnd: false,
      // failedArrays: [],
   }
 
@@ -65,14 +67,17 @@ class SecondPage extends Component {
       // generateNewWordsPackAction,
       // language,
     } = this.props
-    // const {wordsEnd, failedArrays} = this.state
+     const {wordsEnd, failedArrays} = this.state
     // console.log(generatedArrayPack.length)
 
 
     if (generatedArrayPack.length === 0) {
-      // generateNewWordsPackAction(language)
-      // if (failedArrays !== []) {
-      //   localStorage.setItem('failedWords', JSON.stringify(failedArrays))
+
+        // this.deleteCorrectWordFromLocalStorage()
+
+
+      // localStorage.clear()
+      //    localStorage.setItem('failedWords', JSON.stringify(failedArrays))
       // }
       this.setState({
         wordsEnd: true,
@@ -135,38 +140,52 @@ class SecondPage extends Component {
       zeroPassedCounterAfterCheckAllPack,
       zeroFailedCounterAfterCheckAllPack,
       generatedArrayPack,
-      // generatedArray,
-
+      generatedArray,
     } = this.props;
-    const {inputWord} = this.state;
 
-    // console.log(inputWord, isValidWords)
+    const {inputWord} = this.state;
+    const previousErrors = localStorage.getItem('failedWords');
+    const previousErrorsArray = JSON.parse(previousErrors);
 
     if (isValidWords) {
 
       if (inputWord === false) {
         setPassedCounter(passedCounter)
-      }
+
+        console.log('>>>',1);
+
+        if (previousErrorsArray.length !== 0) {
+          console.log('>>>',2);
+
+            if (JSON.stringify(generatedArray) === JSON.stringify(previousErrorsArray[0])) {
+
+              previousErrorsArray.splice(0, 1)
+              console.log('я працюю')
+              console.log(previousErrorsArray.length)
+
+                localStorage.setItem('failedWords', JSON.stringify(previousErrorsArray))
+
+            }
+
+           }
+        }
       this.nextWordInit();
     } else {
       if (inputWord === true) {
         counterAfterCheck(failedCounter)
       } else {
         setFailedCounter(failedCounter)
-        // failedArrays.push(generatedArray)
-        // this.deleteCorrectWordFromLocalStorage()
+        let failedArrays = []
+         if(localStorage.length === 0) {
+          failedArrays.push(generatedArray)
+           localStorage.setItem('failedWords', JSON.stringify(failedArrays))
+         } else {
+           if(JSON.stringify(generatedArray) !== JSON.stringify(previousErrorsArray[0]))
 
-        // const previousErrors = localStorage.getItem('failedWords')
-        // const previousErrorsArray = JSON.parse(previousErrors)
-        // if (inputWord === previousErrorsArray[0]) {
-        //   previousErrorsArray.splice(0,1)
-        //   for (let i = 0; i < previousErrorsArray.length; i++) {
-        //     failedArrays.push(previousErrorsArray[i])
-        //   }
-        //   localStorage.clear()
-        // }
-        // localStorage.setItem(failedCounter, generatedArray)
-        // failedArrays.push((localStorage.getItem(failedCounter)).split(','))
+           previousErrorsArray.push(generatedArray)
+           localStorage.clear()
+           localStorage.setItem('failedWords',JSON.stringify(previousErrorsArray) )
+         }
 
         this.setState({
           inputWord: true
@@ -174,38 +193,118 @@ class SecondPage extends Component {
       }
     }
 
-
-    // for (let i = 0; i <= failedCounter; i++) {
-    //   failedArrays.push((localStorage.getItem(i.toString())).split(','))
-    // }
-    // console.log(failedArrays)
-
     if (generatedArrayPack.length === 0) {
       if (passedCounter === 0) {
         zeroPassedCounterAfterCheckAllPack()
-      } else if(failedCounter === 0) {
+      }
+      if (failedCounter === 0 && previousErrorsArray.length === 0 ){
         zeroFailedCounterAfterCheckAllPack()
+        localStorage.clear()
       }
     }
 
     // console.log(isValidWords)
   }
 
-//   deleteCorrectWordFromLocalStorage = () => {
-//     const {inputWord, failedArrays} = this.state;
-//     const previousErrors = localStorage.getItem('failedWords');
-//     const previousErrorsArray = JSON.parse(previousErrors);
-//
-//     if (inputWord === previousErrorsArray[0]) {
-//       previousErrorsArray.splice(0,1)
-//       if(previousErrorsArray.length !== 0) {
-//         for (let i = 0; i < previousErrorsArray.length; i++) {
-//           failedArrays.push(previousErrorsArray[i])
-//         }
-//       }
-//       localStorage.clear()
-//     }
-// }
+  // deleteCorrectWordFromLocalStorage = () => {
+  //   const {failedArrays} = this.state;
+  //   const {isValidWords, generatedArray} = this.props;
+  //   const previousErrors = localStorage.getItem('failedWords');
+  //   const previousErrorsArray = JSON.parse(previousErrors);
+  //   console.log(isValidWords)
+  //   console.log(failedArrays)
+  //
+  //
+  //     if(localStorage.length !== 0 ) {
+  //       if (isValidWords) {
+  //         if (previousErrorsArray.length === 1) {
+  //           localStorage.clear()
+  //           // if (failedArrays.length !== 0) {
+  //           //   localStorage.setItem('failedWords', JSON.stringify(failedArrays))
+  //           // }
+  //         } else {
+  //           previousErrorsArray.splice(0, 1)
+  //           localStorage.clear()
+  //           localStorage.setItem('failedWords', JSON.stringify(previousErrorsArray))
+  //         }
+  //       }
+  //        else {
+  //         this.setState({
+  //           failedArrays: []
+  //         })
+  //         for (let i = 0; i < previousErrorsArray.length; i++) {
+  //           failedArrays.push(previousErrorsArray[i])
+  //         }
+  //         // localStorage.clear()
+  //         localStorage.setItem('failedWords', JSON.stringify(failedArrays))
+  //       }
+
+
+          // if (localStorage.length === 0){
+          //   failedArrays.push(generatedArray)
+          //   localStorage.setItem('failedWords', JSON.stringify(failedArrays))
+          // } else if (previousErrorsArray.length === 1) {
+          //   failedArrays.push(previousErrorsArray[0])
+          //   localStorage.clear()
+          //   localStorage.setItem('failedWords', JSON.stringify(failedArrays))
+        //   } else {
+        //     for (let i = 0; i < previousErrorsArray.length; i++) {
+        //       failedArrays.push(previousErrorsArray[i])
+        //     }
+        //     localStorage.clear()
+        //     localStorage.setItem('failedWords', JSON.stringify(failedArrays))
+        //   }
+        // }
+      // } else {
+      //   if (isValidWords) {
+      //     // failedArrays.push(generatedArray)
+      //     localStorage.setItem('failedWords', JSON.stringify(failedArrays))
+      //   } else {
+      //     failedArrays.push(generatedArray)
+      //     localStorage.setItem('failedWords', JSON.stringify(failedArrays))
+      //   }
+      // }
+    // }
+    //   if (!isValidWords && previousErrorsArray.length >1) {
+    //   previousErrorsArray.splice(0, 1)
+    //   for (let i = 0; i < previousErrorsArray.length; i++) {
+    //     failedArrays.push(previousErrorsArray[i])
+    //   }
+    //
+    //    // localStorage.clear()
+    // }
+    // localStorage.clear()
+      // if(failedArrays === []) {
+      //   localStorage.clear()
+      // }
+    // }
+    // localStorage.clear()
+     // if (localStorage.length !== 0 || []) {
+     //   previousErrorsArray.splice(0, 1)
+       // if (inputWord === previousErrorsArray[0]) {
+       // previousErrorsArray.splice(0,1)
+       // console.log((previousErrorsArray))
+       // if (previousErrorsArray.length !== 0) {
+       //   for (let i = 0; i < previousErrorsArray.length; i++) {
+       //     failedArrays.push(previousErrorsArray[i])
+       //   }
+       // }
+     // }
+
+
+
+
+    // if (inputWord === previousErrorsArray[0]) {
+    //   previousErrorsArray.splice(0,1)
+    //   if(previousErrorsArray.length !== 0) {
+    //     for (let i = 0; i < previousErrorsArray.length; i++) {
+    //       failedArrays.push(previousErrorsArray[i])
+    //     }
+    //   }
+    //   localStorage.clear()
+
+
+
 
 
   render() {

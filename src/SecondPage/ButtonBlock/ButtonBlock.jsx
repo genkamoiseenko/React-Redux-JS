@@ -28,6 +28,7 @@ class ButtonBlock extends Component {
         this.props.setIsValidWords();
         this.props.history.push('/');
         this.props.resetValueOfWordsEnd();
+
     }
 
     generatedNextPackOfWords = () => {
